@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "${project.name}",
+  "short_name": "devRant Notifications",
+  "version": "${project.version}",
+  "description": "${project.description}",
+  "author": "${project.organization.name}",
+  "homepage_url": "${project.organization.url}",
+  "icons": {
+    "32": "icons/logo_32.png",
+    "48": "icons/logo_48.png",
+    "128": "icons/logo_128.png",
+    "500": "icons/logo_500.png"
+  },
+  "browser_action": {
+    "default_icon": "icons/logo_128.png"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "permissions": [
+    "notifications",
+    "<all_urls>",
+    "tabs",
+    "clipboardWrite",
+    "storage"
+  ]
+}
