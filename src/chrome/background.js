@@ -111,12 +111,11 @@ function checkRants(silent) {
             {
                 "sort": items.sortMethod
             }
-        )
-            .success(function (data) {
-                data.rants.forEach(function (rant) {
-                    showRant(rant, silent);
-                });
+        ).success(function (data) {
+            data.rants.forEach(function (rant) {
+                showRant(rant, silent);
             });
+        });
     });
 
 }
@@ -167,7 +166,6 @@ function createNotification(rant, options) {
     options.iconUrl = "icons/logo_500.png";
     options.message = rant.text;
     options.isClickable = true;
-    options.requireInteraction = true;
     options.buttons = [
         {
             "title": "Open Rant",
@@ -179,10 +177,15 @@ function createNotification(rant, options) {
         }
     ];
 
-    chrome.notifications.create(
-        "https://www.devrant.io/rants/" + rant.id,
-        options
-    );
+    chrome.storage.sync.get({requireInteraction: true}, function (items) {
+        options.requireInteraction = items.requireInteraction;
+
+        chrome.notifications.create(
+            "https://www.devrant.io/rants/" + rant.id,
+            options
+        );
+    });
+
 }
 
 /**

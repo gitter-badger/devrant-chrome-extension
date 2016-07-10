@@ -1,15 +1,58 @@
-// Saves options to chrome.storage.sync.
+/**
+ * Here we define the options that are available for this extension.
+ * @type {*[]}
+ */
+var optionDefinitions = [
+    {
+        id: 'sortMethod',
+        default: 'recent',
+        getValue: function (element) {
+            return element.value;
+        },
+        setValue: function (element, value) {
+            element.value = value;
+        }
+    },
+    {
+        id: 'openMethod',
+        default: 'panel',
+        getValue: function (element) {
+            return element.value;
+        },
+        setValue: function (element, value) {
+            element.value = value;
+        }
+    },
+    {
+        id: 'requireInteraction',
+        default: true,
+        getValue: function (element) {
+            return element.checked;
+        },
+        setValue: function (element, value) {
+            element.checked = value;
+        }
+    }
+];
 
-function save_options() {
+/**
+ * Save the options to chrome.storage.sync.
+ */
+function saveOptions() {
     console.debug("Saving Options...");
-    chrome.storage.sync.set({
-        sortMethod:  document.getElementById('sortMethod').value,
-        openMethod:  document.getElementById('openMethod').value
-    }, report_options_saved);
+    var options = {};
+
+    optionDefinitions.forEach(function (option) {
+        options[option.id] = option.getValue(document.getElementById(option.id));
+    });
+
+    chrome.storage.sync.set(options, reportOptionsSaved);
 }
 
-function report_options_saved() {
-    // Update status to let user know options were saved.
+/**
+ * Show the 'Options saved' message for a moment.
+ */
+function reportOptionsSaved() {
     var status = document.getElementById('status');
     status.textContent = 'Options saved.';
     setTimeout(function () {
@@ -17,21 +60,33 @@ function report_options_saved() {
     }, 750);
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options() {
-    chrome.storage.sync.get({
-        sortMethod: 'recent',
-        openMethod: 'panel'
-    }, function(items) {
-        document.getElementById('sortMethod').value = items.sortMethod;
-        document.getElementById('openMethod').value = items.openMethod;
+/**
+ * Insert the options in the elements in the dom.
+ */
+function restoreOptions() {
+    console.debug("Restoring Options...");
+    var optionDefaults = {};
+    optionDefinitions.forEach(function (option) {
+        optionDefaults[option.id] = option.default;
+    });
+
+    chrome.storage.sync.get(optionDefaults,
+        function (items) {
+            optionDefinitions.forEach(function (option) {
+                option.setValue(document.getElementById(option.id), items[option.id]);
+            });
+        });
+}
+
+/**
+ * Add change listeners to all options elements.
+ */
+function registerListeners() {
+    optionDefinitions.forEach(function (option) {
+        document.getElementById(option.id).addEventListener('change', saveOptions);
     });
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.addEventListener('DOMContentLoaded', registerListeners);
 
-var selects = document.getElementsByTagName("select");
-for (var i = 0; i < selects.length; i++) {
-    selects[i].addEventListener('change', save_options);
-}
