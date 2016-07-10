@@ -60,7 +60,7 @@ function saveOptions() {
  */
 function setStatus(message, success) {
     var status = document.getElementById('status');
-    status.className  = success ? 'success' : 'error';
+    status.className = success ? 'success' : 'error';
     status.textContent = message;
     setTimeout(function () {
         status.textContent = '';
