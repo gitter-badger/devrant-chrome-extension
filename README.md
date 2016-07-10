@@ -35,3 +35,8 @@ Status Chrome Web Store
 -----------------------
 
 This chrome extension is currently under review.
+
+Changelog
+---------
+
+You can find the change log [here](CHANGELOG.md).
