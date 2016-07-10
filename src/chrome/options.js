@@ -3,37 +3,32 @@
  * @type {*[]}
  */
 var optionDefinitions = [
-    {
-        id: 'sortMethod',
-        default: 'recent',
-        getValue: function (element) {
-            return element.value;
-        },
-        setValue: function (element, value) {
-            element.value = value;
+    new Option('sortMethod', 'recent', 'value'),
+    new Option('openMethod', 'panel', 'value'),
+    new Option('requireInteraction', true, 'checked'),
+    new Option('pollingRate', 5, 'value', function (value) {
+        if (isNaN(value)) {
+            throw "The polling rate must be a number";
         }
-    },
-    {
-        id: 'openMethod',
-        default: 'panel',
-        getValue: function (element) {
-            return element.value;
-        },
-        setValue: function (element, value) {
-            element.value = value;
-        }
-    },
-    {
-        id: 'requireInteraction',
-        default: true,
-        getValue: function (element) {
-            return element.checked;
-        },
-        setValue: function (element, value) {
-            element.checked = value;
-        }
-    }
+    })
 ];
+
+function Option(id, defaultValue, elementExtractor, validationFunction) {
+    return {
+        id: id,
+        default: defaultValue,
+        getValue: function (element) {
+            return element[elementExtractor];
+        },
+        setValue: function (element, value) {
+            element[elementExtractor] = value;
+        },
+        validate: typeof validationFunction !== 'undefined' ?
+            validationFunction :
+            function () {
+            }
+    }
+}
 
 /**
  * Save the options to chrome.storage.sync.
@@ -41,23 +36,35 @@ var optionDefinitions = [
 function saveOptions() {
     console.debug("Saving Options...");
     var options = {};
-
+    var errored = false;
     optionDefinitions.forEach(function (option) {
-        options[option.id] = option.getValue(document.getElementById(option.id));
+        try {
+            var value = option.getValue(document.getElementById(option.id));
+            option.validate(value);
+            options[option.id] = value;
+        } catch (error) {
+            errored = true;
+            setStatus(error, false);
+        }
     });
 
-    chrome.storage.sync.set(options, reportOptionsSaved);
+    if (!errored) {
+        chrome.storage.sync.set(options, function () {
+            setStatus("Options Saved", true);
+        });
+    }
 }
 
 /**
  * Show the 'Options saved' message for a moment.
  */
-function reportOptionsSaved() {
+function setStatus(message, success) {
     var status = document.getElementById('status');
-    status.textContent = 'Options saved.';
+    status.className = success ? 'success' : 'error';
+    status.textContent = message;
     setTimeout(function () {
         status.textContent = '';
-    }, 750);
+    }, 1000);
 }
 
 /**

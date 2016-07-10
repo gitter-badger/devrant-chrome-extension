@@ -19,8 +19,15 @@
         #status {
             width: 100%;
             height: 15px;
-            color: green;
             text-align: center;
+        }
+
+        #status.success {
+            color: green;
+        }
+
+        #status.error {
+            color: red;
         }
     </style>
 </head>
@@ -29,7 +36,7 @@
 <section>
     <h3>Sorting</h3>
     <div class="settings-section-content">
-        <span>How would you like to sort when checking for new rants.</span>
+        <span>How would you like to sort when checking for new rants?</span>
         <div class="settings-row">
             <label class="select-label">
                 <span>Sorting Method: </span>
@@ -38,6 +45,18 @@
                     <option value="recent">Recent</option>
                     <option value="top">Top</option>
                 </select>
+            </label>
+        </div>
+    </div>
+</section>
+<section>
+    <h3>Polling</h3>
+    <div class="settings-section-content">
+        <span>How often should we check for new rants?</span>
+        <div class="settings-row">
+            <label class="select-label">
+                <span>In Minutes: </span>
+                <input id="pollingRate"/>
             </label>
         </div>
     </div>
