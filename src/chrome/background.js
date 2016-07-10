@@ -10,7 +10,10 @@ checkRants(true);
 
 // Start checking for new rants
 console.debug("Waiting for new rants...");
-setInterval(checkRants, 60000);
+chrome.storage.sync.get({pollingRate: 5}, function(items) {
+    setInterval(checkRants, items.pollingRate * 60000);
+});
+
 
 // Open devRant on click
 chrome.browserAction.onClicked.addListener(function () {
