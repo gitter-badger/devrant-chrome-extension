@@ -1,5 +1,7 @@
 Chrome Extension: Notifications for devRant
 ===========================================
+
+[![Join the chat at https://gitter.im/ChappIO/devrant-chrome-extension](https://badges.gitter.im/ChappIO/devrant-chrome-extension.svg)](https://gitter.im/ChappIO/devrant-chrome-extension?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square)](https://raw.githubusercontent.com/ChappIO/devrant-chrome-extension/master/LICENSE) [![GitHub release](https://img.shields.io/github/release/ChappIO/devrant-chrome-extension.svg?maxAge=2592000&style=flat-square)](https://github.com/ChappIO/devrant-chrome-extension/releases/latest)
 
 This extension for chrome will display notifications when a new rant is
