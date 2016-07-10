@@ -32,6 +32,16 @@ var optionDefinitions = [
         setValue: function (element, value) {
             element.checked = value;
         }
+    },
+    {
+        id: 'pollingRate',
+        default: 5,
+        getValue: function (element) {
+            return element.value;
+        },
+        setValue: function (element, value) {
+            element.value = value;
+        }
     }
 ];
 
