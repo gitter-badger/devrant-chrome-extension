@@ -12,6 +12,13 @@ checkRants(true);
 console.debug("Waiting for new rants...");
 setInterval(checkRants, 60000);
 
+// Open devRant on click
+chrome.browserAction.onClicked.addListener(function () {
+    chrome.storage.sync.get({sortMethod: 'recent'}, function (items) {
+        chrome.tabs.create({url: "https://www.devrant.io/feed/" + items.sortMethod});
+    });
+});
+
 /**
  * This function is called whenever a notification is clicked.
  * If that happens then the notification will be closed.
