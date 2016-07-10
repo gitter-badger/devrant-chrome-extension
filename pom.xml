@@ -9,7 +9,7 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>Notifications for devRant</name>
+    <name>(Unofficial) Notifications for devRant</name>
     <description>Receive notifications for new rants</description>
 
     <organization>
